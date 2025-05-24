@@ -12,7 +12,7 @@ const cookieParser = require('cookie-parser')
 const app = express()
 app.use(
   cors({
-    origin: 'http://localhost:5173', // Use your actual frontend URL and port
+    origin: 'https://access-nest-git-main-habte121212s-projects.vercel.app', // deployed frontend URL
     credentials: true,
   }),
 )
