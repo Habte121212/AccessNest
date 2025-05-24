@@ -183,6 +183,14 @@ const ManagerDashboard = () => {
   return (
     <div className="manager-dashboard">
       <Toaster position="top-right" toastOptions={{ duration: 2500 }} />
+      <nav className="manager-nav">
+        <button onClick={() => window.location.reload()}>
+          Manager Dashboard
+        </button>
+        <button onClick={() => (window.location.href = '/employee-dashboard')}>
+          Employee Dashboard
+        </button>
+      </nav>
       <div
         style={{
           display: 'flex',
