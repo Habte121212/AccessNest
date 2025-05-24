@@ -1,10 +1,11 @@
 import './App.css'
+import Register from './register/Register'
 
 function App() {
   
 
   return (
-    <div></div>
+    <div> <Register/></div>
   )
 }
 
