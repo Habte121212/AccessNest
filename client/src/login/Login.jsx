@@ -4,7 +4,8 @@ import toast, { Toaster } from 'react-hot-toast'
 import axios from 'axios'
 import './login.scss'
 
-const Login = () => {
+// Accept onLogin prop for authentication
+const Login = ({ onLogin }) => {
   const [form, setForm] = useState({ email: '', password: '' })
   const [loading, setLoading] = useState(false)
   const navigate = useNavigate()
@@ -47,23 +48,8 @@ const Login = () => {
       return toast.error('Password must be at least 6 characters')
     setLoading(true)
     try {
-      const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:8500'
-      const res = await axios.post(
-        `${apiUrl}/server/users/login`,
-        {
-          email: form.email,
-          password: form.password,
-        },
-        { withCredentials: true },
-      )
-      toast.success(res.data.message || 'Login successful!')
-      if (res.data.role === 'manager') {
-        navigate('/manager-dashboard')
-      } else if (res.data.role === 'employee') {
-        navigate('/employee-dashboard')
-      } else {
-        navigate('/dashboard')
-      }
+      await onLogin(form)
+      // Navigation is handled in App.jsx after login
     } catch (err) {
       toast.error(
         err.response?.data?.message || 'Login failed. Please try again.',

@@ -1,0 +1,161 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap');
+
+.employee-dashboard,
+.manager-dashboard {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  background: linear-gradient(120deg, #e3eaff 0%, #f8faff 100%);
+  font-family: 'Inter', sans-serif;
+  padding-top: 40px;
+}
+
+.employee-dashboard h2,
+.manager-dashboard h2 {
+  font-size: 2.2rem;
+  font-weight: 800;
+  color: #4f8cff;
+  margin-bottom: 28px;
+  letter-spacing: 0.02em;
+}
+
+.employee-list,
+.manager-dashboard .employee-list {
+  width: 100%;
+  max-width: 900px;
+  background: #fff;
+  border-radius: 18px;
+  box-shadow: 0 6px 32px rgba(79, 140, 255, 0.13);
+  padding: 36px 28px;
+  overflow-x: auto;
+  margin-bottom: 32px;
+}
+
+.employee-list table,
+.manager-dashboard .employee-list table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.employee-list th,
+.employee-list td,
+.manager-dashboard .employee-list th,
+.manager-dashboard .employee-list td {
+  padding: 14px 18px;
+  text-align: left;
+  border-bottom: 1px solid #e3eaff;
+  font-size: 1.08rem;
+}
+
+.employee-list th,
+.manager-dashboard .employee-list th {
+  background: #f8faff;
+  color: #4f8cff;
+  font-weight: 800;
+  letter-spacing: 0.01em;
+}
+
+.employee-list tr:last-child td,
+.manager-dashboard .employee-list tr:last-child td {
+  border-bottom: none;
+}
+
+.empty {
+  text-align: center;
+  color: #b0b8d1;
+  font-size: 1.15rem;
+  padding: 36px 0;
+}
+
+// Buttons
+.edit-btn,
+.delete-btn,
+.save-btn,
+.cancel-btn {
+  background: none;
+  border: none;
+  color: #4f8cff;
+  font-weight: 700;
+  cursor: pointer;
+  margin-right: 8px;
+  padding: 6px 14px;
+  border-radius: 8px;
+  transition: background 0.2s, color 0.2s;
+  font-size: 1rem;
+}
+
+.edit-btn:hover,
+.save-btn:hover {
+  background: #e3eaff;
+  color: #1a237e;
+}
+
+.delete-btn {
+  color: #e53935;
+}
+
+.delete-btn:hover {
+  background: #ffeaea;
+  color: #b71c1c;
+}
+
+.cancel-btn:hover {
+  background: #f8faff;
+  color: #6a82fb;
+}
+
+// Add form
+.add-form {
+  display: flex;
+  gap: 14px;
+  margin-bottom: 32px;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 12px rgba(79, 140, 255, 0.08);
+  padding: 20px 22px;
+}
+
+.add-form input {
+  padding: 12px 16px;
+  border: 1.5px solid #e3eaff;
+  border-radius: 8px;
+  font-size: 1rem;
+  background: #f8faff;
+  transition: border 0.2s;
+}
+
+.add-form input:focus {
+  border: 1.5px solid #4f8cff;
+  outline: none;
+}
+
+.add-form button {
+  background: linear-gradient(90deg, #4f8cff 0%, #6a82fb 100%);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 12px 22px;
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.add-form button:hover {
+  background: linear-gradient(90deg, #6a82fb 0%, #4f8cff 100%);
+}
+
+@media (max-width: 700px) {
+  .employee-list,
+  .manager-dashboard .employee-list {
+    padding: 18px 4px;
+    max-width: 99vw;
+  }
+  .add-form {
+    flex-direction: column;
+    gap: 10px;
+    padding: 12px 8px;
+  }
+}

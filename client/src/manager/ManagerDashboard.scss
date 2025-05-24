@@ -1,0 +1,134 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap');
+
+.manager-dashboard {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  background: linear-gradient(120deg, #e3eaff 0%, #f8faff 100%);
+  font-family: 'Inter', sans-serif;
+  padding-top: 40px;
+}
+
+.manager-dashboard h2 {
+  font-size: 2rem;
+  font-weight: 800;
+  color: #4f8cff;
+  margin-bottom: 24px;
+}
+
+.add-form {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 32px;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 12px rgba(79, 140, 255, 0.08);
+  padding: 18px 20px;
+}
+
+.add-form input {
+  padding: 10px 14px;
+  border: 1.5px solid #e3eaff;
+  border-radius: 8px;
+  font-size: 1rem;
+  background: #f8faff;
+  transition: border 0.2s;
+}
+
+.add-form input:focus {
+  border: 1.5px solid #4f8cff;
+  outline: none;
+}
+
+.add-form button {
+  background: linear-gradient(90deg, #4f8cff 0%, #6a82fb 100%);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 18px;
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.add-form button:hover {
+  background: linear-gradient(90deg, #6a82fb 0%, #4f8cff 100%);
+}
+
+.employee-list {
+  width: 100%;
+  max-width: 800px;
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 4px 24px rgba(79, 140, 255, 0.13);
+  padding: 32px 24px;
+  overflow-x: auto;
+}
+
+.employee-list table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.employee-list th,
+.employee-list td {
+  padding: 12px 16px;
+  text-align: left;
+  border-bottom: 1px solid #e3eaff;
+  font-size: 1rem;
+}
+
+.employee-list th {
+  background: #f8faff;
+  color: #4f8cff;
+  font-weight: 700;
+}
+
+.employee-list tr:last-child td {
+  border-bottom: none;
+}
+
+.edit-btn,
+.delete-btn,
+.save-btn,
+.cancel-btn {
+  background: none;
+  border: none;
+  color: #4f8cff;
+  font-weight: 700;
+  cursor: pointer;
+  margin-right: 8px;
+  padding: 4px 10px;
+  border-radius: 6px;
+  transition: background 0.2s, color 0.2s;
+}
+
+.edit-btn:hover,
+.save-btn:hover {
+  background: #e3eaff;
+  color: #1a237e;
+}
+
+.delete-btn {
+  color: #e53935;
+}
+
+.delete-btn:hover {
+  background: #ffeaea;
+  color: #b71c1c;
+}
+
+.cancel-btn:hover {
+  background: #f8faff;
+  color: #6a82fb;
+}
+
+.empty {
+  text-align: center;
+  color: #b0b8d1;
+  font-size: 1.1rem;
+  padding: 32px 0;
+}

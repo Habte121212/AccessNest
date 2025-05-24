@@ -1,27 +1,34 @@
 // loading environments
-const dotenv = require('dotenv');
-dotenv.config();
+const dotenv = require('dotenv')
+dotenv.config()
 
-const express = require('express');
+const express = require('express')
 const connectDB = require('./db/dbConfig')
 const { registerRoutes, loginRoutes } = require('./router/User')
-
+const cors = require('cors')
+const cookieParser = require('cookie-parser')
 
 // intialization
-const app = express();
-app.use(express.json());
+const app = express()
+app.use(
+  cors({
+    origin: 'http://localhost:5173', // Use your actual frontend URL and port
+    credentials: true,
+  }),
+)
+app.use(express.json())
+app.use(cookieParser())
 
 // connect to MongoDB
-connectDB();
+connectDB()
 
 // routes
 app.use('/server/users', registerRoutes)
 app.use('/server/users', loginRoutes)
-
 
 // port
 
 const port = process.env.PORT
 app.listen(port, () => {
   console.log(`server is running on port ${port}`)
-});
+})

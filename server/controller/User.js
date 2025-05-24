@@ -91,14 +91,15 @@ const loginUser = async (req, res) => {
     const token = generateToken({
       id: existingUser.id,
       email: existingUser.email,
+      role: existingUser.role, // include role in token
     })
 
     // Set token as HTTP-only cookie and send response once
     res.cookie('token', token, {
       httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
+      secure: false, // for localhost development
       maxAge: 24 * 60 * 60 * 1000,
-      sameSite: 'none',
+      sameSite: 'lax', // for localhost development
     })
     return res
       .status(200)
@@ -208,4 +209,150 @@ const resetPassword = async (req, res) => {
   }
 }
 
-module.exports = { registerUser, loginUser, forgotPassword, resetPassword }
+// GET EMPLOYEES (for dashboard)
+const getEmployees = async (req, res) => {
+  try {
+    // Get user from request (set by auth middleware)
+    const userId = req.user?.id
+    const userRole = req.user?.role
+    console.log('getEmployees: userId:', userId, 'userRole:', userRole)
+    if (!userId || !userRole) {
+      return res.status(401).json({ message: 'Unauthorized' })
+    }
+    if (userRole === 'manager') {
+      // Managers see all employees
+      const employees = await user.find({}, 'name email department role _id')
+      console.log('Employees found:', employees.length)
+      return res.status(200).json(employees)
+    } else {
+      // Employees see only themselves
+      const self = await user.findById(userId, 'name email department role _id')
+      console.log('Employee self:', self)
+      return res.status(200).json(self ? [self] : [])
+    }
+  } catch (error) {
+    console.error('Error fetching employees:', error)
+    return res.status(500).json({ message: 'Internal server error' })
+  }
+}
+
+// ADD EMPLOYEE (manager only)
+const addEmployee = async (req, res) => {
+  try {
+    if (req.user?.role !== 'manager') {
+      return res.status(403).json({ message: 'Forbidden' })
+    }
+    // Validate input
+    const schema = Joi.object({
+      name: Joi.string().min(3).max(20).required(),
+      email: Joi.string().email().required(),
+      department: Joi.string().required(),
+      password: Joi.string().min(6).required(),
+    })
+    const { error } = schema.validate(req.body)
+    if (error) {
+      return res.status(400).json({ message: error.details[0].message })
+    }
+    const { name, email, department, password } = req.body
+    // Check if email exists
+    const existing = await user.findOne({ email })
+    if (existing)
+      return res.status(400).json({ message: 'Email already exists' })
+    // Hash password
+    const salt = await bcrypt.genSalt(10)
+    const hashedPassword = await bcrypt.hash(password, salt)
+    // Create employee
+    const newEmp = new user({
+      name,
+      email,
+      department,
+      password: hashedPassword,
+      role: 'employee',
+    })
+    await newEmp.save()
+    return res.status(201).json({
+      message: 'Employee added',
+      employee: {
+        _id: newEmp._id,
+        name,
+        email,
+        department,
+        role: 'employee',
+      },
+    })
+  } catch (error) {
+    console.error('Error adding employee:', error)
+    return res.status(500).json({ message: 'Internal server error' })
+  }
+}
+
+// UPDATE EMPLOYEE (manager only)
+const updateEmployee = async (req, res) => {
+  try {
+    if (req.user?.role !== 'manager') {
+      return res.status(403).json({ message: 'Forbidden' })
+    }
+    const { id } = req.params
+    const schema = Joi.object({
+      name: Joi.string().min(3).max(20),
+      email: Joi.string().email(),
+      department: Joi.string(),
+    })
+    const { error } = schema.validate(req.body)
+    if (error) {
+      return res.status(400).json({ message: error.details[0].message })
+    }
+    const updated = await user.findByIdAndUpdate(id, req.body, {
+      new: true,
+      fields: 'name email department role _id',
+    })
+    if (!updated) return res.status(404).json({ message: 'Employee not found' })
+    return res
+      .status(200)
+      .json({ message: 'Employee updated', employee: updated })
+  } catch (error) {
+    console.error('Error updating employee:', error)
+    return res.status(500).json({ message: 'Internal server error' })
+  }
+}
+
+// DELETE EMPLOYEE (manager only)
+const deleteEmployee = async (req, res) => {
+  try {
+    if (req.user?.role !== 'manager') {
+      return res.status(403).json({ message: 'Forbidden' })
+    }
+    const { id } = req.params
+    const deleted = await user.findByIdAndDelete(id)
+    if (!deleted) return res.status(404).json({ message: 'Employee not found' })
+    return res.status(200).json({ message: 'Employee deleted' })
+  } catch (error) {
+    console.error('Error deleting employee:', error)
+    return res.status(500).json({ message: 'Internal server error' })
+  }
+}
+
+// GET CURRENT USER (for session persistence)
+const getCurrentUser = async (req, res) => {
+  try {
+    const userId = req.user?.id
+    if (!userId) return res.status(401).json({ message: 'Unauthorized' })
+    const found = await user.findById(userId, 'name email department role _id')
+    if (!found) return res.status(404).json({ message: 'User not found' })
+    return res.status(200).json(found)
+  } catch (error) {
+    return res.status(500).json({ message: 'Internal server error' })
+  }
+}
+
+module.exports = {
+  registerUser,
+  loginUser,
+  forgotPassword,
+  resetPassword,
+  getEmployees,
+  addEmployee,
+  updateEmployee,
+  deleteEmployee,
+  getCurrentUser,
+}
