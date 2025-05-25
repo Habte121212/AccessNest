@@ -24,12 +24,9 @@ function App() {
         })
         if (res.data && res.data.role) {
           setUser({ role: res.data.role })
-          console.log('Session check: user role =', res.data.role)
           if (res.data.role === 'manager') {
-            console.log('Navigating to /manager-dashboard')
             navigate('/manager-dashboard')
           } else {
-            console.log('Navigating to /employee-dashboard')
             navigate('/employee-dashboard')
           }
         }
@@ -70,12 +67,9 @@ function App() {
         { withCredentials: true },
       )
       setUser({ role: res.data.role })
-      console.log('Login: user role =', res.data.role)
       if (res.data.role === 'manager') {
-        console.log('Navigating to /manager-dashboard')
         navigate('/manager-dashboard')
       } else {
-        console.log('Navigating to /employee-dashboard')
         navigate('/employee-dashboard')
       }
     } catch (err) {

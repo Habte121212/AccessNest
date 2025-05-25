@@ -1,37 +1,34 @@
 import React, { useEffect, useState } from 'react'
 import './EmployeeDashboard.scss'
 import axios from 'axios'
-import { useNavigate } from 'react-router-dom'
 import SearchInput from '../search/SearchInput'
-import toast, { Toaster } from 'react-hot-toast'
+import { Toaster } from 'react-hot-toast'
 
 const EmployeeDashboard = () => {
   const [employees, setEmployees] = useState([])
   const [search, setSearch] = useState('')
   const [filtered, setFiltered] = useState([])
-  const navigate = useNavigate()
 
   useEffect(() => {
+    // Fetch employees on mount
     const fetchEmployees = async () => {
       try {
-        const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:8500'
+        const apiUrl =
+          import.meta.env.VITE_API_URL || 'https://accessnest.onrender.com'
         const res = await axios.get(`${apiUrl}/server/users/employees`, {
           withCredentials: true,
         })
+        // Only show employees with role 'employee'
         const emps = res.data.filter((emp) => emp.role === 'employee')
         setEmployees(emps)
         setFiltered(emps)
-      } catch (err) {
-        if (err.response && err.response.status === 401) {
-          navigate('/login')
-        } else {
-          setEmployees([])
-          setFiltered([])
-        }
+      } catch {
+        setEmployees([])
+        setFiltered([])
       }
     }
     fetchEmployees()
-  }, [navigate])
+  }, [])
 
   useEffect(() => {
     if (!search.trim()) {
