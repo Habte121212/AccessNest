@@ -51,7 +51,8 @@ const Register = () => {
     if (!validate()) return
     setLoading(true)
     try {
-      const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:8500'
+      // Always use only the deployed API URL in production
+      const apiUrl = import.meta.env.VITE_API_URL
       const res = await axios.post(`${apiUrl}/server/users/register`, {
         name: form.name,
         email: form.email,
