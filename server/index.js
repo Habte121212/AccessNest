@@ -14,7 +14,8 @@ app.use(
   cors({
     origin: [
       'https://access-nest-git-main-habte121212s-projects.vercel.app',
-      'http://localhost:5173', 
+      'https://client-mi3mzh4d9-habte121212s-projects.vercel.app', // new Vercel frontend
+      'http://localhost:5173',
     ],
     credentials: true,
   }),
